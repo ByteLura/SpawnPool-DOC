@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Core Concepts — SpawnPool Pro Documentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="quick-start.html">Quick Start</a>
+    <a href="installation-and-setup.html">Installation &amp; Setup</a>
+    <a href="core-concepts.html" class="active">Core Concepts</a>
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html">API Reference</a>
+    <a href="honest-limits.html">Honest Limits</a>
+    <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a>
+    <a href="support.html">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>Core Concepts: Pools, Prewarm, Despawn Scheduling</h1>
+
+    <h2>One pool per prefab</h2>
+    <p><code>PoolManager</code> keeps one <code>GameObjectPool</code> per prefab, keyed internally without string keys. The first time you spawn or prewarm a prefab, its pool is created. From then on, every spawn of that prefab is served by that pool.</p>
+    <p>If you want explicit control instead of the static facade, own a <code>GameObjectPool</code> directly: construct it with the prefab, an initial capacity, a growth cap, and the exceed-cap flag, and call its <code>Spawn</code>, <code>Despawn</code>, <code>Prewarm</code>, and <code>Clear</code> methods.</p>
+
+    <h2>Typed pools for plain C# objects</h2>
+    <p><code>Pool&lt;T&gt;</code> pools class instances that are not GameObjects. You construct it with:</p>
+    <ul>
+      <li>a factory that creates one instance,</li>
+      <li>an optional reset action, run when an instance is released,</li>
+      <li>an initial capacity,</li>
+      <li>a growth cap, and</li>
+      <li>the allow-exceed-cap flag (off by default).</li>
+    </ul>
+    <p><code>Get</code> takes an instance, <code>Release</code> returns it, <code>Prewarm</code> creates instances ahead of time, and <code>Clear</code> empties the pool. The same stats model backs both pool kinds.</p>
+
+    <h2>Prewarm</h2>
+    <p>Prewarm creates inactive instances ahead of time and allocates the pool's internal storage once. After prewarm, spawns are served from stock instead of creating at runtime.</p>
+
+    <figure class="doc-figure">
+      <img class="doc-shot" src="images/inspector-1.jpg" alt="Pool Preloader component shown in the Unity Inspector with Prewarm On Awake enabled">
+      <figcaption>The Pool Preloader component in the Inspector, set to prewarm on Awake.</figcaption>
+    </figure>
+    <p>Three ways to prewarm:</p>
+    <ul>
+      <li><code>PoolManager.Prewarm(prefab, count)</code> from code.</li>
+      <li><code>Pool&lt;T&gt;.Prewarm(count)</code> / <code>GameObjectPool.Prewarm(count)</code> on a pool you own.</li>
+      <li>The <code>PoolPreloader</code> component in a scene (see below) — no code at all.</li>
+    </ul>
+    <p>How much to prewarm is not a guess for long: the dashboard's Peak counter tells you the most instances a pool ever had active at once. Set prewarm near Peak once you have played the scene once. See <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>.</p>
+
+    <h2>Growth caps — a pool never silently exceeds its cap</h2>
+    <p>A cap is set when a pool is first created:</p>
+    <ul>
+      <li><code>PoolManager.GetOrCreatePool(prefab, maxCapacity, allowExceedCap)</code> — call it before the first spawn of that prefab,</li>
+      <li>on the <code>PoolPreloader</code> entry for that prefab, or</li>
+      <li>in the <code>Pool&lt;T&gt;</code> / <code>GameObjectPool</code> constructor.</li>
+    </ul>
+    <p>At the cap, the default behaviour is fail-safe refusal:</p>
+    <ul>
+      <li><code>Spawn</code> returns null; <code>TrySpawn</code> returns false.</li>
+      <li>The refusal is counted in <code>CapHits</code>.</li>
+      <li>A warning is logged once per pool per play session.</li>
+    </ul>
+    <p>If you would rather grow than refuse, set the per-pool Allow Exceed Cap flag. Growth past the cap is then allowed, and every such creation is counted in <code>OverflowCreates</code>, so the choice stays visible in the numbers.</p>
+
+    <h2>Spawn and despawn — the lifecycle order</h2>
+    <p>The order is fixed, documented, and safe to rely on in gameplay code.</p>
+    <p>Despawn always, in this order:</p>
+    <ol>
+      <li>fires <code>OnDespawned</code> (the instance is still active — tidy up there),</li>
+      <li>deactivates the instance,</li>
+      <li>parents it to the pool root,</li>
+      <li>makes it available for reuse.</li>
+    </ol>
+    <p>Spawn always, in this order:</p>
+    <ol>
+      <li>takes the longest-inactive instance first (first-in, first-out),</li>
+      <li>sets parent, position, and rotation,</li>
+      <li>activates the instance,</li>
+      <li>fires <code>OnSpawned</code> (reset state there).</li>
+    </ol>
+    <p>Callbacks are collected from the instance and its children once, at creation — there is no per-spawn search.</p>
+
+    <h2>Despawn scheduling — delayed despawn</h2>
+    <p><code>Despawn(instance, delaySeconds)</code> schedules the return through the single hidden driver object. The instance stays active until the driver's clock passes the deadline, then it despawns exactly once.</p>
+    <p>If you despawn the instance manually before the deadline, the scheduled despawn is cancelled — no double return, no warning.</p>
+    <p>The driver object:</p>
+    <ul>
+      <li>is created automatically on first use by <code>PoolSceneBootstrap.EnsureDriver()</code> — you never place it by hand,</li>
+      <li>is named "SpawnPool Pro Driver" and hidden in the hierarchy,</li>
+      <li>ticks delayed despawns and the checkout clock on unscaled time, and</li>
+      <li>is destroyed by <code>PoolManager.ClearAll()</code> and on application quit.</li>
+    </ul>
+    <p>Repeated <code>EnsureDriver</code> calls never create a second driver.</p>
+
+    <h2>Misuse is detected, counted, and safe</h2>
+    <ul>
+      <li><strong>Double return:</strong> returning the same instance twice. The second return is ignored, the pool is never corrupted (the instance is never handed out twice at once), and the event is counted in Warnings.</li>
+      <li><strong>Foreign return:</strong> despawning an instance no pool created. On the GameObject path the instance is destroyed and the event is counted as a foreign-return warning — documented behaviour, never a leak. On the typed path the instance is simply not added to the pool.</li>
+      <li><strong>Already-inactive return:</strong> detected and counted the same way.</li>
+    </ul>
+    <p>Warnings are surfaced in the dashboard and logged once per pool. They are never thrown as exceptions into your game loop — but they always mean a bug in calling code worth fixing.</p>
+
+    <h2>Scene bootstrap — the PoolPreloader</h2>
+    <p>Add <code>PoolPreloader</code> to any scene object and list entries of (prefab, prewarm count, max capacity, allow exceed cap). With Prewarm On Awake enabled (the default) it prewarms each entry into <code>PoolManager</code> on Awake. You can also call <code>PrewarmNow()</code> yourself; repeated calls only top the pools up.</p>
+    <p>A scene containing only a <code>PoolPreloader</code> needs zero buyer code to have its pools ready on play.</p>
+
+    <h2>Clearing everything</h2>
+    <p><code>PoolManager.ClearAll()</code> destroys every pooled instance and the pool root, empties the registry, and destroys the driver. Spawning after <code>ClearAll</code> rebuilds pools fresh, with no stale references. Each pool also has its own <code>Clear()</code>.</p>
+  </main>
+
+  <nav class="prevnext">
+    <a href="installation-and-setup.html">← Previous: Installation &amp; Setup</a>
+    <span class="spacer"></span>
+    <a href="dashboard-and-analytics.html">Next: Dashboard &amp; Analytics →</a>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>

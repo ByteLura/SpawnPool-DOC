@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support &amp; Scope — SpawnPool Pro Documentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="quick-start.html">Quick Start</a>
+    <a href="installation-and-setup.html">Installation &amp; Setup</a>
+    <a href="core-concepts.html">Core Concepts</a>
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html">API Reference</a>
+    <a href="honest-limits.html">Honest Limits</a>
+    <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a>
+    <a href="support.html" class="active">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>Support &amp; Scope</h1>
+
+    <h2>Support</h2>
+    <div class="callout">
+      <p><strong>Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></strong></p>
+      <p>Write to that address — it is the one support door for SpawnPool Pro, so nothing gets lost between inboxes.</p>
+    </div>
+
+    <h2>What to include when you contact support</h2>
+    <ul>
+      <li>Your Unity version (for example, a 2022.3 LTS release or a Unity 6 release).</li>
+      <li>SpawnPool Pro version: 1.0.0.</li>
+      <li>What you did, what you expected, and what happened instead.</li>
+      <li>If Verify Install reported a problem, the exact per-check wording from the window's header status line.</li>
+      <li>If a pool's numbers look wrong, the pool's row from the dashboard — Active, Created, Peak, Cap hits, and Warnings carry most of the story.</li>
+    </ul>
+
+    <h2>Scope of this version</h2>
+    <p>Version 1.0.0 includes:</p>
+    <ul>
+      <li>Typed pools for plain C# class instances and per-prefab GameObject pools behind one small API.</li>
+      <li>Prewarm, growth caps with fail-safe refusal and an opt-in exceed flag, delayed despawn, and scene preloading through <code>PoolPreloader</code> — with no manager object to place by hand.</li>
+      <li>Per-pool live analytics in one Editor dashboard, with long-checkout and warning surfacing.</li>
+      <li>Lifecycle callbacks with a guaranteed order, FIFO reuse, and detected, counted misuse handling.</li>
+      <li>The Pool Playground sample and the documentation set.</li>
+    </ul>
+    <p>Version 1 does not include the items on the <a href="honest-limits.html">Honest Limits</a> page — no Addressables integration, no networking authority, no analytics persistence or export, no automatic pool sizing, no struct pool, and nothing render-pipeline specific. That page is part of the product's scope statement, not fine print.</p>
+
+    <h2>Version and license notes</h2>
+    <ul>
+      <li><strong>Version:</strong> 1.0.0 (the package version and the in-product version line agree).</li>
+      <li><strong>License:</strong> use is governed by the Unity Asset Store Terms of Service and EULA, as stated in the package's LICENSE file. Redistribution of the package source is not permitted.</li>
+      <li><strong>Dependencies:</strong> none. SpawnPool Pro declares no package dependencies beyond Unity itself.</li>
+    </ul>
+  </main>
+
+  <nav class="prevnext">
+    <a href="troubleshooting-faq.html">← Previous: Troubleshooting &amp; FAQ</a>
+    <span class="spacer"></span>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>

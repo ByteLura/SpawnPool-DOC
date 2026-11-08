@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpawnPool Pro — Documentation Home</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html" class="active">Home</a>
+    <a href="quick-start.html">Quick Start</a>
+    <a href="installation-and-setup.html">Installation &amp; Setup</a>
+    <a href="core-concepts.html">Core Concepts</a>
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html">API Reference</a>
+    <a href="honest-limits.html">Honest Limits</a>
+    <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a>
+    <a href="support.html">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>Pool anything. See what it costs.</h1>
+    <p class="lede">SpawnPool Pro is object pooling for Unity with one difference that shapes the whole product: it shows you what your spawns cost.</p>
+
+    <figure class="doc-figure">
+      <img class="doc-hero" src="images/hero.jpg" alt="Pool Playground sample running in the Unity Game view next to the live SpawnPool Pro dashboard with per-pool counts">
+      <figcaption>The Pool Playground sample running beside the live SpawnPool Pro dashboard.</figcaption>
+    </figure>
+
+    <h2>What SpawnPool Pro does</h2>
+    <p>Repeated <code>Instantiate</code> and <code>Destroy</code> calls — bullets, enemies, pickups, effects, floating combat text, and everything else an action game creates and discards hundreds of times a minute — cause garbage collection spikes and frame hitches. Pooling solves that by keeping instances and handing them out again.</p>
+    <p>SpawnPool Pro pools, and then reports, per pool, exactly what happened: how many instances are active, how many are waiting, how many were ever created, the peak in use at once, how many spawns were served from stock versus newly created, how many spawns were refused at a growth cap, and whether anything was returned twice or returned by mistake.</p>
+
+    <h2>Who it is for</h2>
+    <p>Unity developers whose games create and discard objects in volume — projectiles, enemies, pickups, effects, damage numbers — and who want pooling they can measure, not just pooling they have to trust. If your game churns objects every minute of play, this is the tool that pools them and proves the reuse on screen.</p>
+
+    <h2>The two pool kinds</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>GameObject pools</h3>
+        <p>One pool per prefab, behind a single static facade, <code>PoolManager</code>. This is the front door most games use.</p>
+      </div>
+      <div class="card">
+        <h3>Typed pools</h3>
+        <p><code>Pool&lt;T&gt;</code> for plain C# class instances — projectile logic objects, damage events, tokens, and any other reference type your game creates and discards in volume.</p>
+      </div>
+    </div>
+    <p>Both kinds expose the same ideas: prewarm, growth caps, live stats.</p>
+
+    <h2>The dashboard is the product's face</h2>
+    <p>Open <code>Tools &gt; ByteLura &gt; SpawnPool Pro</code>. The window is both the product home — a welcome block with quick actions on first open — and a live dashboard during Play Mode: one row per pool with its counts, an attention area for long checkouts and warnings, and live totals in the footer. See <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>.</p>
+
+    <h2>What is in the package</h2>
+    <ul>
+      <li><strong>Runtime:</strong> typed pools, GameObject pools, the static <code>PoolManager</code> facade, pool statistics and analytics, delayed despawn, a scene preloader component, and lifecycle callbacks.</li>
+      <li><strong>Editor:</strong> the SpawnPool Pro home and dashboard window, plus a built-in Verify Install check.</li>
+      <li><strong>Sample:</strong> Pool Playground — a turret firing pooled projectiles at pooled targets with pooled hit sparks, and live counts on screen.</li>
+      <li><strong>Documentation:</strong> a Quick Start and an API reference ship inside the package; this site expands on both.</li>
+    </ul>
+
+    <h2>Design commitments you can rely on</h2>
+    <ul>
+      <li>After prewarm, the spawn and despawn hot path performs no managed allocation in the shipped automated test on Unity 6000.5.4f1 and Unity 2022.3.22f1. (See <a href="honest-limits.html">Honest Limits</a> for the exact scope of that statement.)</li>
+      <li>A pool never silently exceeds its growth cap.</li>
+      <li>Misuse — a double return, a foreign return — is detected, counted, and surfaced, never thrown into your game loop and never swallowed silently.</li>
+      <li>No package dependencies, no telemetry, no network calls. Analytics are live and in-memory only.</li>
+      <li>The runtime contains no Editor code. A player build contains the pooling runtime and nothing else.</li>
+    </ul>
+
+    <h2>Honest scope, up front</h2>
+    <p>Version 1 is deliberately not an Addressables integration, not a networking solution, not an analytics history tool, and not self-tuning — and the typed pool covers reference types, not structs. The full list, stated plainly, is on the <a href="honest-limits.html">Honest Limits</a> page. Read it before planning around the product.</p>
+
+    <h2>In the editor</h2>
+    <div class="doc-gallery">
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/editor-1.jpg" alt="SpawnPool Pro editor window in its empty state before the first pooled spawn">
+        <figcaption>The SpawnPool Pro window before the first pooled spawn.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/game-1.jpg" alt="Pool Playground in Play Mode with a turret firing pooled projectiles at pooled targets">
+        <figcaption>Pool Playground in Play Mode: pooled projectiles, targets, and hit sparks.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/inspector-1.jpg" alt="Pool Preloader component shown in the Unity Inspector with Prewarm On Awake enabled">
+        <figcaption>The Pool Preloader component in the Inspector, set to prewarm on Awake.</figcaption>
+      </figure>
+    </div>
+
+    <h2>Where to go next</h2>
+    <ul>
+      <li><a href="quick-start.html">Quick Start</a> — pooled spawning in about five minutes.</li>
+      <li><a href="installation-and-setup.html">Installation &amp; Setup</a> — installation, the window, and the Verify Install check.</li>
+      <li><a href="honest-limits.html">Honest Limits</a> — what version 1 is not.</li>
+    </ul>
+
+    <h2>Support</h2>
+    <p>Support is at <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a> — the one support door for SpawnPool Pro, so nothing gets lost between inboxes. See <a href="support.html">Support &amp; Scope</a> for what to include when you write.</p>
+  </main>
+
+  <nav class="prevnext">
+    <span class="spacer"></span>
+    <a href="quick-start.html">Next: Quick Start →</a>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,363 @@
+/* SpawnPool Pro — documentation site
+   Identity: graphite teal + ivory + hot amber (from the product's set) */
+
+:root {
+  --teal: #0e3a36;
+  --teal-dark: #092825;
+  --teal-soft: #175049;
+  --amber: #e8930c;
+  --amber-dark: #c47a06;
+  --ivory: #faf6ec;
+  --paper: #fffdf7;
+  --ink: #1d2422;
+  --muted: #5a6663;
+  --line: #e3dccb;
+  --code-bg: #10201e;
+  --code-ink: #f2ecd9;
+  --inline-code-bg: #f1ead8;
+  --sidebar-w: 268px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--teal);
+  color: var(--ivory);
+  padding: 28px 0 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  padding: 0 24px 18px;
+  border-bottom: 1px solid rgba(250, 246, 236, 0.16);
+}
+
+.brand-name {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  line-height: 1.15;
+}
+
+.brand-name .pro { color: var(--amber); }
+
+.brand-sub {
+  margin-top: 6px;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: rgba(250, 246, 236, 0.72);
+}
+
+.brand-pub {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(250, 246, 236, 0.85);
+}
+
+.nav { padding: 16px 0 8px; }
+
+.nav a {
+  display: block;
+  padding: 8px 24px 8px 21px;
+  color: var(--ivory);
+  text-decoration: none;
+  font-size: 15px;
+  border-left: 3px solid transparent;
+}
+
+.nav a:hover { background: var(--teal-soft); }
+
+.nav a.active {
+  border-left-color: var(--amber);
+  background: var(--teal-dark);
+  font-weight: 700;
+}
+
+.side-support {
+  margin-top: auto;
+  padding: 16px 24px 0;
+  border-top: 1px solid rgba(250, 246, 236, 0.16);
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: rgba(250, 246, 236, 0.72);
+}
+
+.side-support a {
+  color: var(--amber);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14.5px;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.side-support a:hover { text-decoration: underline; }
+
+/* ---------- Main column ---------- */
+
+.main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  max-width: 880px;
+  width: 100%;
+  padding: 40px 48px 24px;
+}
+
+.kicker {
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  color: var(--amber-dark);
+  margin: 0 0 8px;
+}
+
+h1 {
+  font-size: 34px;
+  line-height: 1.2;
+  margin: 0 0 14px;
+  color: var(--teal-dark);
+}
+
+h2 {
+  font-size: 23px;
+  line-height: 1.3;
+  margin: 36px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--amber);
+  color: var(--teal-dark);
+}
+
+h3 {
+  font-size: 18px;
+  margin: 26px 0 8px;
+  color: var(--teal);
+}
+
+p { margin: 0 0 14px; }
+
+.lede {
+  font-size: 18.5px;
+  color: #33403d;
+  margin-bottom: 20px;
+}
+
+a { color: var(--teal-soft); }
+a:hover { color: var(--amber-dark); }
+
+ul, ol { margin: 0 0 16px; padding-left: 26px; }
+li { margin-bottom: 6px; }
+li > ul, li > ol { margin-top: 6px; margin-bottom: 4px; }
+
+strong { color: var(--teal-dark); }
+
+/* ---------- Code ---------- */
+
+code {
+  font-family: Consolas, "Cascadia Code", "Courier New", monospace;
+  font-size: 0.88em;
+  background: var(--inline-code-bg);
+  color: var(--teal-dark);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+pre {
+  background: var(--code-bg);
+  color: var(--code-ink);
+  border-radius: 8px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  margin: 0 0 18px;
+  border-left: 4px solid var(--amber);
+}
+
+pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* ---------- Tables ---------- */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0 0 20px;
+  font-size: 15.5px;
+}
+
+th {
+  background: var(--teal);
+  color: var(--ivory);
+  text-align: left;
+  padding: 9px 12px;
+  font-weight: 700;
+}
+
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+tr:nth-child(even) td { background: var(--ivory); }
+
+td code { white-space: nowrap; }
+
+/* ---------- Callouts & cards ---------- */
+
+.callout {
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--amber);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 0 0 20px;
+}
+
+.callout p:last-child { margin-bottom: 0; }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  margin: 0 0 22px;
+}
+
+.card {
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.card h3 { margin-top: 0; font-size: 16.5px; }
+.card p { font-size: 15px; margin-bottom: 8px; }
+.card p:last-child { margin-bottom: 0; }
+
+/* ---------- Prev / next + footer ---------- */
+
+.prevnext {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 880px;
+  width: 100%;
+  padding: 10px 48px 30px;
+  margin-top: auto;
+  font-size: 15px;
+}
+
+.prevnext a {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.prevnext .spacer { flex: 1; }
+
+.pagefoot {
+  border-top: 1px solid var(--line);
+  padding: 16px 48px 22px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+/* ---------- Documentation images ---------- */
+
+.doc-figure { margin: 0 0 22px; }
+
+.doc-hero,
+.doc-shot {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.doc-figure figcaption {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.doc-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin: 0 0 22px;
+}
+
+.doc-gallery .doc-figure { margin-bottom: 0; }
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 860px) {
+  .sidebar {
+    position: static;
+    width: auto;
+    padding: 20px 0 14px;
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 14px 4px;
+    gap: 2px;
+  }
+
+  .nav a {
+    padding: 6px 10px;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    font-size: 14px;
+  }
+
+  .nav a.active {
+    border-bottom-color: var(--amber);
+    background: none;
+  }
+
+  .side-support { margin-top: 8px; }
+
+  .main { margin-left: 0; }
+
+  .content { padding: 26px 20px 16px; }
+  .prevnext { padding: 8px 20px 24px; }
+  .pagefoot { padding: 14px 20px 20px; }
+
+  h1 { font-size: 27px; }
+  h2 { font-size: 20px; }
+
+  td code { white-space: normal; }
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick Start — SpawnPool Pro Documentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="quick-start.html" class="active">Quick Start</a>
+    <a href="installation-and-setup.html">Installation &amp; Setup</a>
+    <a href="core-concepts.html">Core Concepts</a>
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html">API Reference</a>
+    <a href="honest-limits.html">Honest Limits</a>
+    <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a>
+    <a href="support.html">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>Quick Start</h1>
+    <p class="lede">Pool anything. See what it costs. Never pay Instantiate at runtime again.</p>
+
+    <h2>Your first pooled spawn (about five minutes)</h2>
+    <ol>
+      <li>Open <code>Tools &gt; ByteLura &gt; SpawnPool Pro</code>. The welcome block is at the top of the window.</li>
+      <li>Click <strong>Open the Pool Playground</strong>. The sample imports and its scene opens.</li>
+      <li>Press Play. A turret fires pooled projectiles at pooled targets; hits fire pooled sparks.</li>
+      <li>Look at the SpawnPool Pro window while it plays. Three pools are listed with live counts. Watch the projectile pool: <strong>Created stays flat while Spawns climbs.</strong> That flat Created counter is the whole promise — reuse instead of runtime Instantiate.</li>
+      <li>Stop. Drag your own prefab onto the Pool Preloader in the sample scene (or add a Pool Preloader to your own scene), set its prewarm count, and press Play. Your prefab is pooled.</li>
+    </ol>
+    <p>There is no setup step before this flow. You create no folders, no manager objects, and no configuration assets. Pools create themselves on first use, and the one hidden driver object creates itself too.</p>
+
+    <h2>Pooling from code</h2>
+    <pre><code>using ByteLura.SpawnPool;
+
+// Anywhere — no manager object to place, pools create themselves:
+GameObject bullet = PoolManager.Spawn(bulletPrefab, muzzle.position, muzzle.rotation);
+PoolManager.Despawn(bullet);                 // back into the pool
+PoolManager.Despawn(bullet, 2f);             // ...or after 2 seconds
+PoolManager.Prewarm(bulletPrefab, 32);       // create 32 ahead of time
+
+// Know when a pool is full instead of getting null:
+GameObject enemy;
+if (PoolManager.TrySpawn(enemyPrefab, out enemy)) { /* use it */ }
+
+// Plain C# objects pool too:
+var events = new Pool&lt;DamageEvent&gt;(() =&gt; new DamageEvent(), maxCapacity: 256);
+DamageEvent e = events.Get();
+events.Release(e);</code></pre>
+
+    <h2>Lifecycle callbacks</h2>
+    <p>Add a component implementing <code>IPoolable</code> to a pooled prefab and it hears about every spawn and despawn:</p>
+    <pre><code>public class Bullet : MonoBehaviour, IPoolable
+{
+    public void OnSpawned()  { /* reset state here */ }
+    public void OnDespawned() { /* tidy up here; the object is still active */ }
+}</code></pre>
+    <p>On despawn, <code>OnDespawned</code> runs before deactivation. On spawn, the instance is positioned and activated before <code>OnSpawned</code>. You can rely on that order — <a href="core-concepts.html">Core Concepts</a> explains the full lifecycle.</p>
+
+    <h2>Next pages</h2>
+    <ul>
+      <li><a href="installation-and-setup.html">Installation &amp; Setup</a> — installation, the window, and Verify Install.</li>
+      <li><a href="core-concepts.html">Core Concepts</a> — pools, prewarm, caps, despawn scheduling.</li>
+      <li><a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a> — reading the dashboard and tuning with its numbers.</li>
+    </ul>
+  </main>
+
+  <nav class="prevnext">
+    <a href="index.html">← Previous: Home</a>
+    <span class="spacer"></span>
+    <a href="installation-and-setup.html">Next: Installation &amp; Setup →</a>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>

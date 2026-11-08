@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard &amp; Analytics — SpawnPool Pro Documentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="quick-start.html">Quick Start</a>
+    <a href="installation-and-setup.html">Installation &amp; Setup</a>
+    <a href="core-concepts.html">Core Concepts</a>
+    <a href="dashboard-and-analytics.html" class="active">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html">API Reference</a>
+    <a href="honest-limits.html">Honest Limits</a>
+    <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a>
+    <a href="support.html">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>The Dashboard and Pool Analytics</h1>
+
+    <h2>Opening the dashboard</h2>
+    <p><code>Tools &gt; ByteLura &gt; SpawnPool Pro</code>. One window is both the product home and the live dashboard. It is Editor-only: it reads live memory, and a player build contains no dashboard code.</p>
+
+    <figure class="doc-figure">
+      <img class="doc-shot" src="images/game-2.jpg" alt="Live dashboard pool table showing Active, Pooled, and Created counts for the Projectile, Target, and Spark pools during play">
+      <figcaption>Live pool counts in the dashboard while the Pool Playground runs.</figcaption>
+    </figure>
+
+    <h2>The pools table</h2>
+    <p>One row per pool, refreshing on a 250 ms editor tick during Play Mode:</p>
+    <table>
+      <thead>
+        <tr><th>Column</th><th>What it shows</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Pool</strong></td><td>The pool's name (the prefab name for GameObject pools).</td></tr>
+        <tr><td><strong>Active</strong></td><td>Instances checked out right now.</td></tr>
+        <tr><td><strong>Inactive</strong> (shown as Pooled in the Quick Start)</td><td>Instances waiting in the pool, ready to reuse.</td></tr>
+        <tr><td><strong>Created</strong></td><td>Instances the pool has ever made. Flat is good: a flat Created counter while Spawns climbs is reuse, proven on screen.</td></tr>
+        <tr><td><strong>Peak</strong></td><td>The most instances ever active at once.</td></tr>
+        <tr><td><strong>Spawns</strong></td><td>Total spawns served.</td></tr>
+        <tr><td><strong>Reused %</strong></td><td>The share of spawns served from existing stock rather than newly created.</td></tr>
+        <tr><td><strong>Cap hits</strong></td><td>Spawns refused because the pool was at its cap.</td></tr>
+        <tr><td><strong>Warnings</strong></td><td>Double returns, foreign returns, and similar misuse, counted per pool.</td></tr>
+      </tbody>
+    </table>
+    <p>In Edit Mode the table is static. If pools exist but the editor is not playing, the window shows a hint to enter Play Mode to see live counts. With no pools registered yet, the window shows its empty state: one line explaining that pools appear the moment your game spawns something pooled, and one action — Open the Pool Playground.</p>
+
+    <h2>The attention strip</h2>
+    <p>The strip appears only when there is something to act on:</p>
+    <ul>
+      <li><strong>Long checkouts</strong> — pools with an instance checked out past the threshold, with the pool name, the instance, and how long it has been out, in plain language with the one action that resolves it: if the object is not meant to be long-lived, look for a missed Despawn.</li>
+      <li><strong>Pools with warnings</strong> — the pool name and warning count.</li>
+    </ul>
+    <p>Checkout ages are measured on the driver clock (unscaled time). The long-checkout flag is computed in the stats, not in the window — the dashboard displays the analytics; it does not recount anything.</p>
+
+    <h2>The footer</h2>
+    <p>Live totals across all pools — total active, total pooled objects, total warnings — plus the Clear All Pools button. In Play Mode it despawns everything; in Edit Mode it performs the full teardown described in <a href="core-concepts.html">Core Concepts</a>.</p>
+
+    <h2>The stats behind the window — PoolStats and PoolAnalytics</h2>
+    <p>Every pool, typed and GameObject alike, can produce a <code>PoolStats</code> snapshot with these counters:</p>
+    <p><code>PoolName</code>, <code>ActiveCount</code>, <code>InactiveCount</code>, <code>TotalCreated</code>, <code>PeakActive</code>, <code>SpawnCount</code>, <code>DespawnCount</code>, <code>ReusedCount</code> (spawns served from stock), <code>CreatedOnSpawnCount</code> (spawns that had to create), <code>CapHits</code>, <code>OverflowCreates</code>, <code>Warnings</code>, <code>LongestCheckoutSeconds</code>, and <code>ReuseRatio</code> (0 to 1).</p>
+    <p><code>PoolAnalytics</code> aggregates all registered pools:</p>
+    <ul>
+      <li><code>PoolCount</code> — how many pools are registered.</li>
+      <li><code>GetAllStats(results)</code> — fills a list you supply with one snapshot per pool; the list is cleared and reused.</li>
+      <li><code>TotalWarnings</code> — warnings across all pools, plus pool-less warnings.</li>
+    </ul>
+    <p>Snapshots are built on demand, only when something reads them. The hot path itself updates counters only — plain field increments on spawn and despawn — so reading analytics costs the game nothing per frame, and nothing at all when nobody reads them.</p>
+
+    <h2>Tuning with the numbers</h2>
+    <ul>
+      <li><strong>Created climbing during play:</strong> the pool is still creating at runtime. Raise prewarm toward Peak.</li>
+      <li><strong>Peak well above prewarm:</strong> either raise prewarm, or accept the created-on-spawn spawns knowingly — the split between <code>ReusedCount</code> and <code>CreatedOnSpawnCount</code> tells you exactly how many.</li>
+      <li><strong>Cap hits above zero:</strong> spawns are being refused. Raise the cap, fix the leak that holds instances out (check <code>LongestCheckoutSeconds</code>), or knowingly enable Allow Exceed Cap.</li>
+      <li><strong>Warnings above zero:</strong> a double return or a foreign return happened. The count and the pool name point at the calling code to fix.</li>
+      <li><strong>LongestCheckoutSeconds far beyond an object's intended life:</strong> an instance is being held — most often a missed Despawn on one path.</li>
+    </ul>
+  </main>
+
+  <nav class="prevnext">
+    <a href="core-concepts.html">← Previous: Core Concepts</a>
+    <span class="spacer"></span>
+    <a href="sample-guide.html">Next: Sample Guide →</a>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>

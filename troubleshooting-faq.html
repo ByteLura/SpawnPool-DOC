@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting &amp; FAQ — SpawnPool Pro Documentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="quick-start.html">Quick Start</a>
+    <a href="installation-and-setup.html">Installation &amp; Setup</a>
+    <a href="core-concepts.html">Core Concepts</a>
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html">API Reference</a>
+    <a href="honest-limits.html">Honest Limits</a>
+    <a href="troubleshooting-faq.html" class="active">Troubleshooting &amp; FAQ</a>
+    <a href="support.html">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>Troubleshooting &amp; FAQ</h1>
+    <p class="lede">Every answer below describes behaviour defined in the product's own documentation and code. If your case is not covered, see the <a href="support.html">Support &amp; Scope</a> page for how support works.</p>
+
+    <h3>The dashboard is empty</h3>
+    <p>That is the expected empty state, not an error. Pools appear in the dashboard the moment your game spawns something pooled. Press Play in a scene that pools something — or open the Pool Playground from the welcome block and watch its three pools appear.</p>
+
+    <h3>Spawn returned null</h3>
+    <p>The pool is at its growth cap. The refusal has been counted in <code>CapHits</code> and warned about once for this pool this session. Your options:</p>
+    <ul>
+      <li>raise the cap (set it before the first spawn of that prefab, through <code>GetOrCreatePool</code>, the <code>PoolPreloader</code> entry, or the pool constructor),</li>
+      <li>find the instances being held out too long — <code>LongestCheckoutSeconds</code> and the dashboard's attention strip point at them, or</li>
+      <li>knowingly enable Allow Exceed Cap for that pool if growth is the behaviour you want.</li>
+    </ul>
+    <p>If you need to branch on refusal without a null check, use <code>TrySpawn</code>, which returns false at cap.</p>
+
+    <h3>My Warnings counter is above zero</h3>
+    <p>A warning means one of these happened, and each one points at calling code worth fixing:</p>
+    <ul>
+      <li><strong>Double return</strong> — the same instance was returned twice. The second return was ignored and the pool was not corrupted. Look for a duplicate Despawn call, including a delayed despawn racing a manual one — note that a manual despawn before a delayed deadline cancels the schedule, so that pairing on its own does not warn.</li>
+      <li><strong>Foreign return</strong> — an instance no pool created was despawned. On the GameObject path it was destroyed and counted. Look for a Despawn call on an object that was never spawned through the pool.</li>
+    </ul>
+    <p>Warnings are logged once per pool and counted per pool, so the dashboard tells you which pool's calling code to inspect.</p>
+
+    <h3>Created keeps climbing during play</h3>
+    <p>The pool is still creating instances at runtime: spawns are exceeding the stock. Read Peak — the most instances ever active at once — and raise prewarm toward it. The split between <code>ReusedCount</code> and <code>CreatedOnSpawnCount</code> tells you how many spawns were served from stock versus created.</p>
+
+    <h3>An instance never comes back</h3>
+    <p>Most often a missed Despawn on one code path. Check <code>LongestCheckoutSeconds</code> for the pool and the attention strip in the dashboard, which lists long checkouts with the instance and how long it has been out. Delayed despawns can also be in flight: an instance despawned with a delay stays active until its deadline passes.</p>
+
+    <h3>OnDespawned cleanup runs, but the object still looks active in it</h3>
+    <p>That is the guaranteed order, not a bug: <code>OnDespawned</code> runs while the instance is still active, before deactivation and parking. <code>OnSpawned</code> is the mirror: the instance is positioned and activated first, then <code>OnSpawned</code> runs. <a href="core-concepts.html">Core Concepts</a> documents the full order.</p>
+
+    <h3>The driver object — what is it, and can I delete it?</h3>
+    <p>"SpawnPool Pro Driver" is the single hidden object the product creates on first use. It ticks delayed despawns and the checkout clock. You never place it and you do not need to manage it: it is hidden in the hierarchy, repeated creation is guarded, and <code>PoolManager.ClearAll()</code> and application quit destroy it cleanly. If it is missing, it is recreated on next use.</p>
+
+    <h3>Does SpawnPool Pro work with Addressables content?</h3>
+    <p>There is no Addressables integration in version 1, and the package carries no Addressables dependency. If you instantiate an object from an Addressables handle yourself, you can pool that instance through the normal API. Loading, releasing, and tracking Addressables assets stays your code's job. See <a href="honest-limits.html">Honest Limits</a>.</p>
+
+    <h3>Does anything get saved, exported, or sent anywhere?</h3>
+    <p>No. Analytics are live and in-memory only. The runtime writes nothing to disk, makes no network calls, and sends no telemetry. When Play Mode stops, the counters stop.</p>
+
+    <h3>Structs, networking, automatic sizing?</h3>
+    <p>Not in version 1 — the typed pool is for reference types, pools are local to the client, and caps are set by you with the dashboard's numbers to guide you. <a href="honest-limits.html">Honest Limits</a> is the full honest-limits list.</p>
+
+    <h3>Verify Install reports a problem</h3>
+    <p>Re-import the package, then run Verify Install again from <code>Tools &gt; ByteLura &gt; SpawnPool Pro &gt; Verify Install</code> and read its per-check report in the window's header status line. If a check still fails on a clean import, contact support as described on the <a href="support.html">Support &amp; Scope</a> page and include the exact per-check wording.</p>
+  </main>
+
+  <nav class="prevnext">
+    <a href="honest-limits.html">← Previous: Honest Limits</a>
+    <span class="spacer"></span>
+    <a href="support.html">Next: Support &amp; Scope →</a>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>

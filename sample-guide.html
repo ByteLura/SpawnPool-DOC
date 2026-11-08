@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample Guide — Pool Playground — SpawnPool Pro Documentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="quick-start.html">Quick Start</a>
+    <a href="installation-and-setup.html">Installation &amp; Setup</a>
+    <a href="core-concepts.html">Core Concepts</a>
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html" class="active">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html">API Reference</a>
+    <a href="honest-limits.html">Honest Limits</a>
+    <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a>
+    <a href="support.html">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>Sample Guide: Pool Playground</h1>
+
+    <h2>What the sample is</h2>
+    <p>A turret, its projectiles, the targets, and the hit sparks — everything on screen is pooled. The Pool Playground is the fastest way to see the product's promise with your own eyes: reuse instead of runtime Instantiate, proven by a counter that stays flat.</p>
+
+    <h2>Run it</h2>
+    <ol>
+      <li>Open the PoolPlayground scene — the welcome block's Open the Pool Playground action imports the sample and opens the scene for you.</li>
+      <li>Open <code>Tools &gt; ByteLura &gt; SpawnPool Pro</code> and keep the window visible.</li>
+      <li>Press Play.</li>
+    </ol>
+
+    <h2>What to watch</h2>
+    <ul>
+      <li>The turret sweeps and fires. Every projectile is a reused pool instance: in the dashboard, the projectile pool's Created counter stays flat while Spawns climbs.</li>
+      <li>Targets pop with a pooled spark and are replaced by the field — again from the pool, not from Instantiate.</li>
+      <li>The board in the scene shows the same counters the dashboard shows, read from <code>PoolAnalytics</code>.</li>
+    </ul>
+
+    <h2>How it is wired</h2>
+    <ul>
+      <li><strong>Pool Preloader</strong> (on the "Pool Setup" object) prewarms all three prefabs — no code, no manager object placed by hand.</li>
+      <li><strong>PlaygroundTurret</strong> spawns through <code>PoolManager.Spawn</code> and arms each projectile with Launch.</li>
+      <li><strong>PlaygroundProjectile</strong> and <strong>PlaygroundTarget</strong> implement <code>IPoolable</code> to reset themselves on spawn and tidy up on despawn.</li>
+      <li><strong>PlaygroundField</strong> manages the target field and its replacements.</li>
+      <li><strong>PooledLifetime</strong> gives the sparks their short life, despawning through the same public API.</li>
+      <li><strong>PlaygroundHud</strong> draws the on-screen live counts, read from <code>PoolAnalytics</code> — the same data the dashboard shows.</li>
+      <li>Every script in the sample uses only the public SpawnPool Pro API — the same calls your game would make. The sample has its own assembly that references the Runtime assembly only.</li>
+    </ul>
+
+    <h2>Make it yours — the two-minute experiment</h2>
+    <ol>
+      <li>Stop Play Mode.</li>
+      <li>Drag your own prefab onto the Pool Preloader in the sample scene, or add an entry for it, and set a prewarm count.</li>
+      <li>Press Play and find your prefab's pool in the dashboard.</li>
+    </ol>
+    <p>Your prefab is now pooled, with its counts on screen. That is the whole adoption path: there is no other integration step.</p>
+
+    <h2>What the sample deliberately does not do</h2>
+    <ul>
+      <li>It does not use any internal or editor-only API — if the sample can do it, your game code can do it the same way.</li>
+      <li>It carries no extra dependencies: its on-screen text uses built-in Unity UI with the default font, keeping the package dependency-free.</li>
+    </ul>
+  </main>
+
+  <nav class="prevnext">
+    <a href="dashboard-and-analytics.html">← Previous: Dashboard &amp; Analytics</a>
+    <span class="spacer"></span>
+    <a href="api-reference.html">Next: API Reference →</a>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>

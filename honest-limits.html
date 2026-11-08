@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Honest Limits — SpawnPool Pro Documentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="quick-start.html">Quick Start</a>
+    <a href="installation-and-setup.html">Installation &amp; Setup</a>
+    <a href="core-concepts.html">Core Concepts</a>
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html">API Reference</a>
+    <a href="honest-limits.html" class="active">Honest Limits</a>
+    <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a>
+    <a href="support.html">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>Honest Limits: What Version 1 Is Not</h1>
+    <p class="lede">This page expands the WhatV1IsNot page that ships inside the package. Read it before planning around SpawnPool Pro. Everything here is a deliberate scope decision for version 1, stated plainly so your plan never depends on something the product does not do.</p>
+
+    <h2>Not an Addressables integration</h2>
+    <p>The package has no Addressables dependency. You can pool an object you instantiated from an Addressables handle yourself through the normal API, but SpawnPool Pro does not load, release, or track Addressables assets for you.</p>
+
+    <h2>Not a networking solution</h2>
+    <p>Pools are local to this client. Networked games pool their local visuals and effects; spawn authority stays with your netcode.</p>
+
+    <h2>Not an analytics history tool</h2>
+    <p>Counters are live and in-memory. Nothing is saved to disk, exported, or graphed over time; when Play Mode stops, the numbers stop. Nothing about your project leaves your machine — the product makes no network calls and sends no telemetry.</p>
+
+    <h2>Not self-tuning</h2>
+    <p>Caps and prewarm counts are yours to set. The dashboard shows you exactly the numbers to tune them with — Peak tells you the prewarm a pool actually needs — but the product does not resize pools on its own.</p>
+
+    <h2>Not a struct pool</h2>
+    <p>The typed pool covers reference types (classes). The same pattern works for structs, but a struct pool is not shipped in version 1.</p>
+
+    <h2>Not render-pipeline specific</h2>
+    <p>The runtime is render-pipeline agnostic and makes no pipeline claims.</p>
+
+    <h2>The exact scope of the allocation statement</h2>
+    <p>The hot-path statement covers Spawn and Despawn — and typed Get and Release — after prewarm. It does not cover:</p>
+    <ul>
+      <li>setup and first creation (creating an instance the first time is real work, done once),</li>
+      <li>prewarm itself,</li>
+      <li>building <code>PoolStats</code> snapshots, which happens on demand when you or the dashboard reads them, or</li>
+      <li>editor window drawing.</li>
+    </ul>
+    <p>Copy anywhere that implies allocation-free behaviour outside that scope would be wrong, and this product does not make that claim.</p>
+
+    <h2>No persistent settings in version 1</h2>
+    <p>There is no settings asset and no configuration file. The only stored preference is the window's own "Show welcome on open" toggle, kept in editor preferences. Teardown is Clear All Pools — there is nothing else to reset because there is nothing else stored.</p>
+  </main>
+
+  <nav class="prevnext">
+    <a href="api-reference.html">← Previous: API Reference</a>
+    <span class="spacer"></span>
+    <a href="troubleshooting-faq.html">Next: Troubleshooting &amp; FAQ →</a>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>

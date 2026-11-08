@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Reference — SpawnPool Pro Documentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="quick-start.html">Quick Start</a>
+    <a href="installation-and-setup.html">Installation &amp; Setup</a>
+    <a href="core-concepts.html">Core Concepts</a>
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html" class="active">API Reference</a>
+    <a href="honest-limits.html">Honest Limits</a>
+    <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a>
+    <a href="support.html">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>API Reference Summary</h1>
+    <p class="lede">All types live in the <code>ByteLura.SpawnPool</code> namespace. This page summarizes the API reference that ships inside the package (<code>Documentation~/ApiReference.md</code>); that shipped file is the canonical version.</p>
+
+    <h2>PoolManager (static)</h2>
+    <p>The front door for GameObject pooling. One pool per prefab, created on first use. There is no manager object to place in a scene.</p>
+    <ul>
+      <li><code>Spawn(GameObject prefab)</code> — spawn at the prefab's own position and rotation. Null at cap.</li>
+      <li><code>Spawn(GameObject prefab, Vector3 position, Quaternion rotation, Transform parent = null)</code> — spawn placed. Null at cap.</li>
+      <li><code>Spawn&lt;T&gt;(T componentPrefab)</code> — spawn a component prefab; returns the component. Null at cap.</li>
+      <li><code>TrySpawn(GameObject prefab, out GameObject instance)</code> — non-throwing spawn; false at cap.</li>
+      <li><code>Despawn(GameObject instance)</code> — return an instance to its pool. Foreign instances are destroyed and counted as warnings.</li>
+      <li><code>Despawn(GameObject instance, float delaySeconds)</code> — delayed despawn via the single hidden driver. A manual despawn before the deadline cancels it.</li>
+      <li><code>GetOrCreatePool(GameObject prefab, int maxCapacity = 0, bool allowExceedCap = false)</code> — get or create the pool for a prefab; call before first spawn to set caps.</li>
+      <li><code>Prewarm(GameObject prefab, int count)</code> — create inactive instances ahead of time.</li>
+      <li><code>TryGetStats(GameObject prefab, out PoolStats stats)</code> — snapshot for a prefab's pool; false if no pool exists yet.</li>
+      <li><code>ClearAll()</code> — destroy every pooled instance, the pool root, and the driver.</li>
+    </ul>
+
+    <h2>GameObjectPool</h2>
+    <p>Own one directly when you want explicit control instead of the static facade.</p>
+    <ul>
+      <li>Constructor: <code>GameObjectPool(GameObject prefab, int initialCapacity = 0, int maxCapacity = 0, bool allowExceedCap = false, Transform root = null)</code>.</li>
+      <li><code>Spawn()</code> / <code>Spawn(Vector3, Quaternion, Transform)</code> / <code>TrySpawn(out GameObject, Vector3, Quaternion, Transform)</code> — same semantics as PoolManager.</li>
+      <li><code>Despawn(GameObject)</code>, <code>Prewarm(int)</code>, <code>Clear()</code>, <code>Stats</code>, <code>Prefab</code>, <code>ActiveCount</code>, <code>InactiveCount</code>.</li>
+    </ul>
+
+    <h2>Pool&lt;T&gt; — typed pool for plain C# objects</h2>
+    <ul>
+      <li>Constructor: <code>Pool(Func&lt;T&gt; factory, Action&lt;T&gt; resetOnRelease = null, int initialCapacity = 0, int maxCapacity = 0, bool allowExceedCap = false)</code>.</li>
+      <li><code>Get()</code> returns an instance, or null at the cap. <code>TryGet(out T)</code> is the non-throwing form.</li>
+      <li><code>Release(T)</code> returns an instance. Double releases and foreign releases are detected, counted in <code>Stats.Warnings</code>, and ignored — the pool is never corrupted by misuse.</li>
+      <li><code>Prewarm(int)</code>, <code>Clear()</code>, <code>Stats</code>, <code>ActiveCount</code>, <code>InactiveCount</code>.</li>
+    </ul>
+
+    <h2>PoolStats</h2>
+    <p>A snapshot struct: <code>PoolName</code>, <code>ActiveCount</code>, <code>InactiveCount</code>, <code>TotalCreated</code>, <code>PeakActive</code>, <code>SpawnCount</code>, <code>DespawnCount</code>, <code>ReusedCount</code>, <code>CreatedOnSpawnCount</code>, <code>CapHits</code>, <code>OverflowCreates</code>, <code>Warnings</code>, <code>LongestCheckoutSeconds</code>, and <code>ReuseRatio</code> (0 to 1). Snapshots are built on demand; reading them is never part of the hot path.</p>
+
+    <h2>PoolAnalytics (static)</h2>
+    <ul>
+      <li><code>PoolCount</code> — registered pools.</li>
+      <li><code>GetAllStats(List&lt;PoolStats&gt; results)</code> — fills your list with one snapshot per pool (the list is cleared and reused).</li>
+      <li><code>TotalWarnings</code> — warnings across all pools plus pool-less warnings.</li>
+    </ul>
+
+    <h2>PoolPreloader (component)</h2>
+    <p>Add to any scene object; list (prefab, prewarm count, max capacity, allow exceed cap) entries. Prewarms in Awake by default, or call <code>PrewarmNow()</code> yourself. Repeated calls only top up.</p>
+
+    <h2>IPoolable</h2>
+    <ul>
+      <li><code>OnSpawned()</code> runs after positioning and activation.</li>
+      <li><code>OnDespawned()</code> runs while the instance is still active, before deactivation and parking.</li>
+      <li>Callbacks are collected from the instance and its children once, at creation.</li>
+    </ul>
+
+    <h2>Semantics you can rely on</h2>
+    <ul>
+      <li><strong>FIFO reuse:</strong> the longest-inactive instance is handed out first.</li>
+      <li><strong>Cap behaviour:</strong> at cap, spawns refuse (null / false), the refusal is counted in <code>CapHits</code>, and a warning is logged once per pool per session. Pools never silently exceed a cap unless created with Allow Exceed Cap.</li>
+      <li><strong>Hot path:</strong> after prewarm, Spawn/Despawn — and typed Get/Release — perform no managed allocation in the shipped automated test on Unity 6000.5.4f1 and Unity 2022.3.22f1.</li>
+      <li>Checkout ages are measured on the driver clock (unscaled time) and reported as <code>LongestCheckoutSeconds</code>.</li>
+      <li>Errors are warnings with counters, never exceptions across the game loop. The exception is setup-time constructor argument validation, which throws the standard argument exceptions at setup time only.</li>
+    </ul>
+  </main>
+
+  <nav class="prevnext">
+    <a href="sample-guide.html">← Previous: Sample Guide</a>
+    <span class="spacer"></span>
+    <a href="honest-limits.html">Next: Honest Limits →</a>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>

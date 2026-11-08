@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installation &amp; Setup — SpawnPool Pro Documentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="quick-start.html">Quick Start</a>
+    <a href="installation-and-setup.html" class="active">Installation &amp; Setup</a>
+    <a href="core-concepts.html">Core Concepts</a>
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html">API Reference</a>
+    <a href="honest-limits.html">Honest Limits</a>
+    <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a>
+    <a href="support.html">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>Installation &amp; Setup</h1>
+
+    <h2>Requirements</h2>
+    <ul>
+      <li>Unity 2022.3 LTS or Unity 6. The automated acceptance evidence is recorded on Unity 6000.5.4f1 and Unity 2022.3.22f1.</li>
+      <li>No package dependencies. SpawnPool Pro declares no dependencies beyond Unity itself, and installing it installs nothing else.</li>
+    </ul>
+
+    <h2>Import</h2>
+    <p>Import the package from the Asset Store in the usual way. After import:</p>
+    <ul>
+      <li>Nothing appears in your scene, and nothing needs to.</li>
+      <li>No folders, manager objects, or configuration assets are created for you to fill in — pooling has no project state to create.</li>
+      <li>The product home is the window at <code>Tools &gt; ByteLura &gt; SpawnPool Pro</code>.</li>
+    </ul>
+
+    <h2>First open — the welcome block</h2>
+    <p>The first time you open <code>Tools &gt; ByteLura &gt; SpawnPool Pro</code> in a project, the window shows its welcome block: the product name, the outcome line, the version line (Version 1.0.0), and four quick actions:</p>
+
+    <figure class="doc-figure">
+      <img class="doc-shot" src="images/editor-2.jpg" alt="SpawnPool Pro window header showing the Verify Install result confirming the install checks passed">
+      <figcaption>Verify Install reporting its result in the window header.</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Open the Pool Playground</strong> — imports the sample if it is not imported yet, then opens its scene.</li>
+      <li><strong>Verify Install</strong> — runs the built-in checks described below.</li>
+      <li><strong>Documentation</strong> — opens the Quick Start shipped inside the package.</li>
+      <li><strong>Support</strong> — opens the ByteLura publisher page on the Asset Store.</li>
+    </ul>
+    <p>A "Show welcome on open" toggle in the header persists through editor preferences. On later opens the welcome block starts collapsed and can be re-expanded with one click.</p>
+
+    <h2>The Setup flow — Verify Install</h2>
+    <p>Verify Install is the product's setup action. Run it from the welcome block or from <code>Tools &gt; ByteLura &gt; SpawnPool Pro &gt; Verify Install</code>.</p>
+    <p>It checks, and reports in plain language in the window's header status line, that:</p>
+    <ul>
+      <li>the package's assemblies have loaded,</li>
+      <li>the sample is present or can be imported, and</li>
+      <li>one self-test pool can prewarm, spawn, and despawn in the Editor.</li>
+    </ul>
+    <p>Verify Install is idempotent. It is safe to re-run at any time, and it changes nothing in your project.</p>
+
+    <h2>Reset path</h2>
+    <p>There are no persistent settings in version 1, so there is nothing else to reset. Full teardown back to the post-import state is one action:</p>
+    <ul>
+      <li>the <strong>Clear All Pools</strong> button in the window footer, or</li>
+      <li><code>PoolManager.ClearAll()</code> from code,</li>
+    </ul>
+    <p>which destroys every pooled instance, the pool root, and the driver.</p>
+
+    <h2>Importing the sample</h2>
+    <p>The Pool Playground sample can be imported either way:</p>
+    <ul>
+      <li>from the welcome block's <strong>Open the Pool Playground</strong> action, which imports it for you, or</li>
+      <li>from the Package Manager's Import button for the Pool Playground sample, like any package sample.</li>
+    </ul>
+    <p>See the <a href="sample-guide.html">Sample Guide</a> for the guided tour of the sample.</p>
+
+    <h2>If something looks wrong after import</h2>
+    <ul>
+      <li>The window does not open, or opens empty: run Verify Install from the menu and read its per-check report.</li>
+      <li>Your pools do not appear: pools appear in the dashboard the moment your game spawns something pooled — an empty dashboard before the first pooled spawn is the expected empty state, not an error.</li>
+      <li>More cases are covered on the <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a> page.</li>
+    </ul>
+  </main>
+
+  <nav class="prevnext">
+    <a href="quick-start.html">← Previous: Quick Start</a>
+    <span class="spacer"></span>
+    <a href="core-concepts.html">Next: Core Concepts →</a>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>
