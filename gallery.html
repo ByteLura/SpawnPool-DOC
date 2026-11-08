@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gallery — SpawnPool Pro Documentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">SpawnPool <span class="pro">Pro</span></div>
+    <div class="brand-sub">Documentation · Version 1.0.0</div>
+    <div class="brand-pub">A ByteLura product</div>
+  </div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="gallery.html" class="active">Gallery</a>
+    <a href="quick-start.html">Quick Start</a>
+    <a href="installation-and-setup.html">Installation &amp; Setup</a>
+    <a href="core-concepts.html">Core Concepts</a>
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    <a href="sample-guide.html">Sample Guide — Pool Playground</a>
+    <a href="api-reference.html">API Reference</a>
+    <a href="honest-limits.html">Honest Limits</a>
+    <a href="troubleshooting-faq.html">Troubleshooting &amp; FAQ</a>
+    <a href="support.html">Support &amp; Scope</a>
+  </nav>
+  <div class="side-support">Support<br><a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></div>
+</aside>
+
+<div class="main">
+  <main class="content">
+    <p class="kicker">SpawnPool Pro · ByteLura</p>
+    <h1>Gallery</h1>
+    <p class="lede">SpawnPool Pro in the Pool Playground sample — every frame is the real sample, the real window, or the real code, nothing staged.</p>
+
+    <p>The fifteen frames below walk through the package: the sample in
+    play beside the live dashboard, the dashboard up close, prewarm,
+    growth caps, delayed despawn, the preloader, the return loop,
+    typed pools, pool statistics, Verify Install, the sample at full
+    width, the dashboard under load, the measured hot path, the
+    lifecycle interface, and the product at a glance. Each frame is
+    captioned with what it shows; the
+    <a href="sample-guide.html">Pool Playground sample guide</a> tours
+    the same features step by step, and
+    <a href="dashboard-and-analytics.html">Dashboard &amp; Analytics</a>
+    explains every count on screen.</p>
+
+    <div class="doc-gallery">
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-01.png" alt="The Pool Playground sample in Play Mode: pooled projectiles and targets on the playfield beside the live SpawnPool Pro dashboard">
+        <figcaption>The sample in play: pooled projectiles and targets on the playfield beside the live dashboard.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-02.png" alt="The SpawnPool Pro dashboard up close, showing per-pool counts for active, waiting and created instances">
+        <figcaption>The dashboard, up close: per-pool counts — active, waiting, created — in the live window.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-03.png" alt="Prewarm: the PoolManager.Prewarm API shown as typed code beside an Inspector capture">
+        <figcaption>Prewarm: the <code>PoolManager.Prewarm</code> API as typed code beside the Inspector capture.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-04.png" alt="Growth caps: the dashboard wording for CapHits and OverflowCreates when a pool reaches its cap">
+        <figcaption>Growth caps: what happens at the cap — CapHits and OverflowCreates, in the dashboard's own words.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-05.png" alt="Delayed despawn: real playfield frames in a storyboard with the Despawn call that takes an instance and a delay in seconds">
+        <figcaption>Delayed despawn: real playfield frames with the <code>Despawn(instance, delaySeconds)</code> call.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-06.png" alt="The Pool Preloader component in the Unity Inspector, set to prewarm on Awake">
+        <figcaption>The Pool Preloader in the Inspector, set to prewarm on Awake.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-07.png" alt="The return loop as a technical diagram: three reservoirs and the path an instance takes home, with a real playfield inset">
+        <figcaption>The return loop, as a diagram: three reservoirs and the path an instance takes home, with a real playfield inset.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-08.png" alt="Typed pools: the Pool generic type shown with its real constructor, Get, Release and Prewarm signatures">
+        <figcaption>Typed pools: <code>Pool&lt;T&gt;</code> with the real constructor, Get, Release and Prewarm signatures.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-09.png" alt="PoolStats: the full field list of thirteen fields plus the computed ReuseRatio beside the live dashboard">
+        <figcaption>PoolStats: the full field list — thirteen fields plus the computed ReuseRatio — beside the live dashboard.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-10.png" alt="Verify Install: the SpawnPool Pro window's own checklist output, word for word">
+        <figcaption>Verify Install: the window's own checklist output, word for word.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-11.png" alt="Pool Playground at full width: the turret firing pooled projectiles at pooled targets with pooled hit sparks">
+        <figcaption>Pool Playground at full width: the turret, pooled projectiles, targets, and hit sparks.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-12.png" alt="The dashboard under load: the footer Warning state and the induction the sample actually ran">
+        <figcaption>The dashboard under load: the footer Warning state and the induction the sample actually ran.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-13.png" alt="The measured hot path: the zero-allocation scope for Spawn and Despawn plus typed Get and Release after prewarm, tested on Unity 6000.5.4f1 and 2022.3.22f1">
+        <figcaption>The hot path, measured: the zero-allocation scope — Spawn and Despawn plus typed Get and Release after prewarm — tested on Unity 6000.5.4f1 and 2022.3.22f1.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-14.png" alt="The IPoolable lifecycle: the interface's own shape with the flows its remarks describe">
+        <figcaption>The IPoolable lifecycle: the interface's own shape, with the flows its remarks describe.</figcaption>
+      </figure>
+      <figure class="doc-figure">
+        <img class="doc-shot" src="images/showcase-15.png" alt="SpawnPool Pro at a glance: the measured contents of the package, counted, not claimed">
+        <figcaption>At a glance: the measured contents of the package, counted, not claimed.</figcaption>
+      </figure>
+    </div>
+  </main>
+
+  <nav class="prevnext">
+    <a href="index.html">← Previous: Home</a>
+    <span class="spacer"></span>
+    <a href="quick-start.html">Next: Quick Start →</a>
+  </nav>
+
+  <footer class="pagefoot">SpawnPool Pro 1.0.0 · ByteLura · Support: <a href="mailto:bytelura@gmail.com">bytelura@gmail.com</a></footer>
+</div>
+
+</body>
+</html>
